@@ -101,7 +101,9 @@ const Home = () => {
     const capture_ss = async () => {
         const uri = await ss.current.capture()
         dispatch(setPath(uri))
+
         console.log(path)
+        console.log(`Lat:${isLatitude}, Long:${isLongitude}`);
 
         axios.post('http://3.7.20.173:8503/api/upload/', {
             'file': path
@@ -111,11 +113,11 @@ const Home = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView>
+
             <ViewShot
                 ref={ss}
                 options={{ format: 'jpg' }}
-                style={styles.container}
             >
                 <MapView
                     provider={PROVIDER_GOOGLE}
@@ -127,7 +129,6 @@ const Home = () => {
                         longitudeDelta: 0.0121,
                     }}
                 >
-
                     {chargers.map(({ id, latitude, longitude }) => (
                         <Marker
                             key={id}
@@ -137,32 +138,24 @@ const Home = () => {
                             }}
                         />
                     ))}
-
                 </MapView>
             </ViewShot>
+
             <TouchableOpacity
                 style={styles.btn}
                 onPress={capture_ss}
             >
                 <Image style={styles.btnImg} source={require('./assets/screenShot-icon.png')} />
             </TouchableOpacity>
+
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        ...StyleSheet.absoluteFillObject,
-        height: '100%',
-        width: '100%'
-    },
-
-    inner_container: {
-        ...StyleSheet.absoluteFillObject,
-    },
 
     map: {
-        ...StyleSheet.absoluteFillObject,
+        height: '100%',
     },
 
     btn: {
